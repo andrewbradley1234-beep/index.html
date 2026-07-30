@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StreetFurr Exotics CEO OS</title>
+<style>
+:root{
+  --bg:#070b12;--panel:#121824;--panel2:#1d2636;--line:#334155;--text:#f8fafc;--muted:#94a3b8;
+  --gold:#f5b642;--green:#4ade80;--blue:#60a5fa;--red:#fb7185;--purple:#c084fc;--cyan:#67e8f9;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#17233a 0,#070b12 46%);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+.hidden{display:none!important}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.loginBox{width:100%;max-width:430px;background:rgba(18,24,36,.96);border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.logo{font-size:31px;font-weight:900}.tag{color:var(--muted);margin:8px 0 20px}
+input,select,textarea,button{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:15px}
+textarea{min-height:85px;resize:vertical}
+label{display:block;color:var(--muted);font-size:12px;margin:10px 0 5px}
+button{background:var(--gold);color:#17120a;border:0;font-weight:900;cursor:pointer}
+.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.danger{background:var(--red);color:white}
+header{padding:16px 20px;background:rgba(8,12,19,.94);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;backdrop-filter:blur(10px)}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px}.head h1{margin:0;font-size:24px}.small{font-size:12px;color:var(--muted)}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:12px}
+main{max-width:1500px;margin:auto;padding:16px}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tab{width:auto;background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:10px 13px}.tab.active{background:var(--gold);color:#17120a}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:12px}
+.card{background:rgba(18,24,36,.96);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 15px 35px rgba(0,0,0,.22)}
+.metricLabel{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px}.metric{font-size:25px;font-weight:900;margin-top:6px}
+.green{color:var(--green)}.gold{color:var(--gold)}.blue{color:var(--blue)}.purple{color:var(--purple)}.cyan{color:var(--cyan)}.red{color:var(--red)}
+.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}.title{font-size:18px;margin:0 0 12px}
+.form6{display:grid;grid-template-columns:1.1fr .8fr .55fr .75fr .7fr .7fr;gap:8px;align-items:end}
+.form5{display:grid;grid-template-columns:1.1fr .65fr .55fr .55fr .75fr;gap:8px;align-items:end}
+.form3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:end}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--muted);background:#101722;position:sticky;top:0}
+.wrap{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:14px}
+.actions{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}.miniGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.mini{background:#0f1622;border:1px solid var(--line);border-radius:14px;padding:11px}.mini b{display:block;font-size:18px;margin-top:4px}
+.prompt{background:#0f1622;border:1px solid var(--line);border-radius:14px;padding:12px;white-space:pre-wrap;margin-bottom:10px}
+.copy{float:right;width:auto;padding:7px 10px;font-size:12px}
+.check{display:grid;grid-template-columns:30px 1fr .8fr .5fr;gap:8px;align-items:center;margin-bottom:8px}.chatBox{height:260px;overflow:auto;background:#0f1622;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}.msg{padding:9px 11px;border-radius:12px;margin-bottom:8px}.userMsg{background:#263247}.botMsg{background:#14251b}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.day{min-height:86px;background:#0f1622;border:1px solid var(--line);border-radius:12px;padding:8px}.day b{font-size:12px;color:var(--muted)}.eventChip{margin-top:5px;padding:5px 6px;border-radius:8px;background:var(--gold);color:#17120a;font-size:11px;font-weight:800}.agentActions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.form6,.form5,.form3,.actions,.miniGrid,.check{grid-template-columns:1fr 1fr}.metric{font-size:22px}}
+.quickPos{border:1px solid rgba(245,182,66,.55);background:linear-gradient(135deg,rgba(245,182,66,.12),rgba(18,24,36,.98));margin-bottom:14px}
+.quickPosRow{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}
+.quickInput{font-size:20px;padding:16px;border:2px solid var(--gold);background:#0c121c}
+.quickBtn{width:auto;min-width:120px;padding:16px}
+.previewBox{margin-top:12px;background:#0f1622;border:1px solid var(--line);border-radius:14px;padding:12px}
+.previewGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:10px}
+.previewItem{background:#111b29;border:1px solid var(--line);border-radius:12px;padding:10px}.previewItem span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase}.previewItem b{display:block;margin-top:5px;font-size:16px}
+.quickHelp{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.quickExample{width:auto;padding:7px 10px;font-size:12px;background:#182234;color:var(--text);border:1px solid var(--line)}
+.quickStatus{margin-top:8px;color:var(--muted);font-size:12px}
+@media(max-width:1100px){.quickPosRow{grid-template-columns:1fr 1fr}.quickInput{grid-column:1/-1}.previewGrid{grid-template-columns:repeat(2,1fr)}}
+
+
+/* Mobile-first event POS enhancements for iPhone and Android */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+body{min-height:100dvh;overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font-family:inherit;touch-action:manipulation}
+button{min-height:46px}
+input,select,textarea{font-size:16px} /* prevents iPhone Safari auto-zoom */
+header{padding-top:max(12px,env(safe-area-inset-top));}
+main{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+.quickInput{min-height:58px}
+.mobilePosBar{display:none}
+
+@media(max-width:760px){
+  body{background:#070b12}
+  .login{padding:14px;padding-top:max(14px,env(safe-area-inset-top));padding-bottom:max(14px,env(safe-area-inset-bottom))}
+  .loginBox{border-radius:18px;padding:20px}
+  .logo{font-size:27px}
+  header{padding-left:12px;padding-right:12px}
+  .head{align-items:flex-start}
+  .head h1{font-size:19px;line-height:1.15}
+  .head .small{display:none}
+  .head>div:last-child{display:flex;align-items:center;gap:6px;flex-shrink:0}
+  .head .pill{display:none}
+  .head button{margin-left:0!important;padding:9px 11px;min-height:40px}
+  main{padding:10px 10px calc(88px + env(safe-area-inset-bottom))}
+  .nav{display:none}
+  .card{border-radius:15px;padding:12px}
+  .title{font-size:17px}
+  .grid{grid-template-columns:1fr 1fr;gap:8px}
+  .metric{font-size:20px}
+  .metricLabel{font-size:10px;line-height:1.25}
+  .layout,.form6,.form5,.form3,.actions,.miniGrid,.check,.agentActions{grid-template-columns:1fr!important}
+  .form3>div[style*="grid-column"]{grid-column:auto!important}
+  .quickPos{margin:-1px 0 10px;padding:12px;border-width:2px}
+  .quickPos .title{font-size:20px;margin-bottom:6px}
+  .quickPosRow{display:block}
+  .quickPosRow>div{margin-bottom:9px}
+  .quickInput{font-size:18px;padding:15px;min-height:60px;border-radius:14px}
+  .quickBtn{width:100%;min-height:54px;font-size:17px;padding:14px}
+  .quickHelp{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .quickExample{width:100%;min-height:42px;white-space:normal;padding:8px;font-size:11px}
+  .previewGrid{grid-template-columns:1fr 1fr;gap:7px}
+  .previewItem{padding:9px}
+  .previewItem b{font-size:15px;overflow-wrap:anywhere}
+  #quickPreview .form3{display:grid;gap:8px}
+  #quickPreview button{min-height:50px}
+  .wrap{max-height:none;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{min-width:880px;font-size:12px}
+  th,td{padding:8px 7px}
+  .calendar{gap:3px}
+  .day{min-height:62px;padding:5px;border-radius:9px}
+  .eventChip{font-size:9px;padding:4px}
+  .mobilePosBar{position:fixed;display:grid;grid-template-columns:repeat(5,1fr);left:0;right:0;bottom:0;z-index:50;background:rgba(8,12,19,.98);border-top:1px solid var(--line);padding:7px 6px calc(7px + env(safe-area-inset-bottom));backdrop-filter:blur(14px);box-shadow:0 -8px 28px rgba(0,0,0,.38)}
+  .mobilePosBar button{background:transparent;color:var(--muted);border:0;border-radius:10px;padding:6px 2px;min-height:52px;font-size:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+  .mobilePosBar button strong{font-size:19px;line-height:1}
+  .mobilePosBar button.active{background:rgba(245,182,66,.14);color:var(--gold)}
+  .mobilePosBar .sellNow{background:var(--gold);color:#17120a;transform:translateY(-12px);border-radius:16px;box-shadow:0 8px 24px rgba(245,182,66,.28)}
+  .mobilePosBar .sellNow.active{background:var(--gold);color:#17120a}
+}
+
+@media(max-width:390px){
+  .grid{grid-template-columns:1fr 1fr}
+  .metric{font-size:18px}
+  .quickHelp{grid-template-columns:1fr}
+  .previewGrid{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<section id="loginPage" class="login">
+  <div class="loginBox">
+    <div class="logo">StreetFurr Exotics</div>
+    <div class="tag">CEO OS login demo</div>
+    <label>Email</label><input id="loginEmail" value="streetfurr@exotics.com">
+    <label>Password</label><input id="loginPass" type="password" placeholder="Password">
+    <br><br><button onclick="login()">Log In</button>
+    <p class="small">Demo gate for private laptop use. For a real vendor product, deploy with server authentication, hashed passwords, HTTPS, and database-level security.</p>
+  </div>
+</section>
+
+<section id="app" class="hidden">
+<header>
+  <div class="head">
+    <div><h1>StreetFurr Exotics CEO OS</h1><div class="small">Sales • yesterday loaded • inventory counts • potential revenue/profit • events • tasks • prompts • AI agents • checks and balances</div></div>
+    <div><span class="pill" id="userPill"></span><button class="secondary" style="width:auto;margin-left:8px" onclick="logout()">Logout</button></div>
+  </div>
+</header>
+<main>
+<div class="nav">
+  <button class="tab active" onclick="showTab('dashboard',this)">CEO Dashboard</button>
+  <button class="tab" onclick="showTab('sales',this)">Sales POS</button>
+  <button class="tab" onclick="showTab('inventory',this)">Inventory</button>
+  <button class="tab" onclick="showTab('events',this)">Events</button>
+  <button class="tab" onclick="showTab('tasks',this)">Tasks</button>
+  <button class="tab" onclick="showTab('agents',this)">AI Agents</button>
+  <button class="tab" onclick="showTab('checks',this)">Checks</button>
+</div>
+
+<section id="dashboard" class="tabPage">
+  <div class="grid">
+    <div class="card"><div class="metricLabel">Total Sales</div><div class="metric green" id="totalSales">$0.00</div></div>
+    <div class="card"><div class="metricLabel">Ron Payout — Product Cost Owed</div><div class="metric gold" id="totalCost">$0.00</div></div>
+    <div class="card"><div class="metricLabel">Profit After Paying Ron</div><div class="metric blue" id="totalProfit">$0.00</div></div>
+    <div class="card"><div class="metricLabel">Drew</div><div class="metric cyan" id="drewShare">$0.00</div></div>
+    <div class="card"><div class="metricLabel">Zack</div><div class="metric purple" id="zackShare">$0.00</div></div>
+    <div class="card"><div class="metricLabel">Transactions</div><div class="metric" id="txCount">0</div></div>
+  </div>
+  <div class="layout">
+    <div class="card"><h2 class="title">Payment Breakdown</h2><div class="miniGrid" id="paymentGrid"></div></div>
+    <div class="card"><h2 class="title">CEO Outcome Scoreboard</h2><div class="miniGrid">
+      <div class="mini"><span class="small">Avg Sale</span><b id="avgSale">$0.00</b></div>
+      <div class="mini"><span class="small">Profit / Hour</span><b id="profitHour">$0.00</b></div>
+      <div class="mini"><span class="small">Best Product</span><b id="bestProduct">N/A</b></div>
+    </div><br><label>Hours Worked</label><input id="hoursWorked" type="number" step="0.25" value="4" oninput="render()"></div>
+  </div>
+</section>
+
+<section id="sales" class="tabPage hidden">
+  <div class="card quickPos">
+    <h2 class="title">⚡ Easy POS — Type the Sale</h2>
+    <p class="small">Enter a sale the same way you would write it in your notes. Examples: <b>BX2 2 oz for 400</b>, <b>BX2 half oz for 75</b>, or <b>Super Boof 6 oz for 700</b>. Payment defaults to Cash unless you type Cash App, Chime, PayPal, Card, or Other.</p>
+    <div class="quickPosRow">
+      <div><label>Quick Sale</label><input id="quickSaleInput" class="quickInput" placeholder="BX2 2 oz for 400 cash" autocomplete="off"></div>
+      <button class="quickBtn" onclick="parseQuickSale()">Review Sale</button>
+    </div>
+    <div class="quickHelp">
+      <button class="quickExample" onclick="useQuickExample('BX2 2 oz for 400 cash')">BX2 2 oz for 400</button>
+      <button class="quickExample" onclick="useQuickExample('BX2 half oz for 75 Cash App')">BX2 half oz for 75</button>
+      <button class="quickExample" onclick="useQuickExample('Super Boof 6 oz for 700')">Super Boof 6 oz for 700</button>
+    </div>
+    <div id="quickStatus" class="quickStatus">Ready for the next sale.</div>
+    <div id="quickPreview" class="previewBox hidden">
+      <div class="previewGrid">
+        <div class="previewItem"><span>Product</span><b id="qpProduct">—</b></div>
+        <div class="previewItem"><span>Weight / Item</span><b id="qpUnit">—</b></div>
+        <div class="previewItem"><span>Quantity</span><b id="qpQty">—</b></div>
+        <div class="previewItem"><span>Payment</span><b id="qpPayment">—</b></div>
+        <div class="previewItem"><span>Total Sale Revenue</span><b id="qpAmount">—</b></div>
+        <div class="previewItem"><span>Ron Cost / Amount Owed</span><b id="qpRon">—</b></div>
+        <div class="previewItem"><span>Profit After Paying Ron</span><b id="qpProfit">—</b></div>
+        <div class="previewItem"><span>Drew Profit</span><b id="qpDrew">—</b></div>
+        <div class="previewItem"><span>Zack Profit</span><b id="qpZack">—</b></div>
+        <div class="previewItem"><span>Break-Even Price</span><b id="qpBreakEven">—</b></div>
+      </div>
+      <div class="form3">
+        <button onclick="confirmQuickSale()">Confirm & Add Sale</button>
+        <button class="secondary" onclick="editQuickSale()">Edit in Manual Form</button>
+        <button class="secondary" onclick="cancelQuickSale()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2 class="title">Manual Sale Form</h2>
+    <div class="form6">
+      <div><label>Product</label><select id="saleProduct"></select></div>
+      <div><label>Weight / Item</label><select id="saleUnit"><option>Unit</option><option>HP</option><option>QP</option><option>Ounce</option><option>Half Ounce</option><option>Quarter</option><option>Eighth</option><option>Jar</option><option>Cart</option><option>Shirt</option><option>Hoodie</option><option>Hat</option><option>Backpack</option><option>Custom</option></select></div>
+      <div><label>Qty</label><input id="saleQty" type="number" step="0.01" value="1"></div>
+      <div><label>Sale Amount $</label><input id="saleAmount" type="number" step="0.01"></div>
+      <div><label>Payment</label><select id="payment"><option>Cash</option><option>Cash App</option><option>Chime</option><option>PayPal</option><option>Card</option><option>Other</option></select></div>
+      <div><button onclick="addSale()">Add Sale</button></div>
+    </div>
+    <div class="actions"><button class="secondary" onclick="exportCSV()">Export CSV</button><button class="secondary" onclick="undoLast()">Undo Last</button><button class="secondary" onclick="loadLastNight()">Load Last Night</button><button class="secondary" onclick="closeout()">Closeout</button><button class="danger" onclick="clearSales()">Clear</button></div>
+    <br><div class="wrap"><table><thead><tr><th>#</th><th>Product</th><th>Category</th><th>Unit</th><th>Qty</th><th>Pay</th><th>Sales</th><th>Ron Cost/Owed</th><th>Profit After Ron</th><th>Drew / Zack Each</th><th></th></tr></thead><tbody id="salesBody"></tbody></table></div>
+  </div>
+</section>
+
+<section id="inventory" class="tabPage hidden">
+  <div class="layout">
+    <div class="card">
+      <h2 class="title">Add / Receive Product</h2>
+      <div class="form5">
+        <div><label>Name</label><input id="newName" placeholder="Whole Melts, Mike Tyson Cart, etc."></div>
+        <div><label>Category</label><select id="newCat"><option>Flower</option><option>Wax</option><option>Cart</option><option>Merchandise</option><option>Other</option></select></div>
+        <div><label>Full Unit Cost $</label><input id="newCost" type="number" step="0.01"></div>
+        <div><label>Starting Inventory</label><input id="newInv" type="number" step="0.0078125" placeholder="Flower: full 16 oz units"></div>
+        <div><button onclick="addProduct()">Add</button></div>
+      </div>
+      <label>Notes</label><textarea id="newNotes"></textarea>
+    </div>
+    <div class="card"><h2 class="title">Inventory Weight Control</h2><p class="small"><b>Flower conversion:</b> 1 full unit = 16 oz = 32 half ounces = 64 quarters = 128 eighths. Enter flower inventory as full 16 oz units. Every POS sale automatically subtracts the exact weight so starting and remaining totals reconcile.</p><div class="miniGrid">
+      <div class="mini"><span class="small">Remaining Cost Basis</span><b id="inventoryCost">$0.00</b></div>
+      <div class="mini"><span class="small">Flower Ounces Left</span><b id="inventoryQty">0 oz</b></div>
+      <div class="mini"><span class="small">Low Stock Alerts</span><b id="lowStock">0</b></div>
+    </div></div>
+  </div>
+  <br><div class="card"><h2 class="title">Product Manager</h2><p class="small">For flower, cost is the price of one full 16 oz unit. Starting inventory is entered in full units. Current inventory and every smaller weight are calculated automatically.</p><div id="productList"></div><button class="secondary" onclick="saveProducts()">Save Products</button></div>
+  <br><div class="card"><h2 class="title">Flower Weight Reconciliation</h2><div class="wrap"><table><thead><tr><th>Product</th><th>Started</th><th>Sold</th><th>Remaining Units</th><th>Ounces</th><th>Half Ounces</th><th>Quarters</th><th>Eighths</th><th>Status</th></tr></thead><tbody id="inventoryWeightBody"></tbody></table></div></div>
+</section>
+
+<section id="events" class="tabPage hidden">
+  <div class="layout">
+    <div class="card">
+      <h2 class="title">Event Manager</h2>
+      <div class="form3">
+        <div><label>Event Name</label><input id="eventName" value="MOCANNAFEST"></div>
+        <div><label>Date</label><input id="eventDate" type="date"></div>
+        <div><button onclick="saveEvent()">Save Event</button></div>
+      </div>
+      <label>Location</label><input id="eventLocation" placeholder="Venue / city">
+      <label>Notes</label><textarea id="eventNotes"></textarea>
+      <br><br><h2 class="title">Upcoming Events</h2><div id="eventList"></div>
+    </div>
+    <div class="card">
+      <h2 class="title">Event Calendar</h2>
+      <div class="form3">
+        <button class="secondary" onclick="moveMonth(-1)">Previous</button>
+        <div class="metric" id="calendarTitle" style="text-align:center"></div>
+        <button class="secondary" onclick="moveMonth(1)">Next</button>
+      </div><br>
+      <div class="calendar" id="calendarGrid"></div>
+    </div>
+  </div>
+  <br><div class="card"><h2 class="title">Closeout Report</h2><div id="closeoutBox" class="prompt">Generate closeout from Sales POS.</div></div>
+</section>
+
+<section id="tasks" class="tabPage hidden">
+  <div class="card"><h2 class="title">Task Command Center</h2><div class="form3"><div><label>Task</label><input id="taskName" placeholder="Restock carts, post promo, count cash"></div><div><label>Owner</label><input id="taskOwner" placeholder="Drew / Zack"></div><div><button onclick="addTask()">Add Task</button></div></div><br><div id="taskList"></div></div>
+</section>
+
+<section id="agents" class="tabPage hidden">
+  <div class="layout">
+    <div class="card">
+      <h2 class="title">StreetFurr AI Command Center</h2>
+      <p class="small">Ask the built-in agent what to do. It can add tasks, create closeout reports, load yesterday's sales, review payments, and give action plans inside the dashboard.</p>
+      <div class="agentActions">
+        <button class="secondary" onclick="agentDo('plan')">Make Today Plan</button>
+        <button class="secondary" onclick="agentDo('audit')">Audit Sales</button>
+        <button class="secondary" onclick="agentDo('tasks')">Create Tasks</button>
+      </div>
+      <div id="chatBox" class="chatBox"></div>
+      <div class="form3">
+        <div style="grid-column:span 2"><label>Ask the agent</label><input id="agentInput" placeholder="Example: what should we do next? add tasks for closeout"></div>
+        <div><button onclick="askAgent()">Ask Agent</button></div>
+      </div>
+      <p class="small">This demo agent runs locally. Real AI automation requires connecting this dashboard to an API/backend.</p>
+    </div>
+    <div class="card">
+      <h2 class="title">AI Agent Prompt Vault</h2>
+      <p class="small">Copy these into ChatGPT/AI tools or use them as future agent jobs.</p>
+      <div id="promptVault"></div>
+    </div>
+  </div>
+</section>
+
+<section id="checks" class="tabPage hidden">
+  <div class="card">
+    <h2 class="title">Checks & Balances</h2>
+    <p class="small">Use this before closeout so sales, cash, digital payments, and inventory reconcile.</p>
+    <div id="checkList"></div>
+  </div>
+</section>
+
+</main>
+</section>
+<nav class="mobilePosBar" aria-label="Mobile navigation">
+  <button data-mobile-tab="dashboard" onclick="mobileShowTab('dashboard',this)"><strong>⌂</strong>Home</button>
+  <button data-mobile-tab="inventory" onclick="mobileShowTab('inventory',this)"><strong>▦</strong>Stock</button>
+  <button class="sellNow active" data-mobile-tab="sales" onclick="mobileShowTab('sales',this)"><strong>＋</strong>Sell</button>
+  <button data-mobile-tab="events" onclick="mobileShowTab('events',this)"><strong>▣</strong>Events</button>
+  <button data-mobile-tab="checks" onclick="mobileShowTab('checks',this)"><strong>✓</strong>Closeout</button>
+</nav>
+
+<script>
+
+function mobileShowTab(name,button){
+  const desktopButton=[...document.querySelectorAll('.tab')].find(b=>String(b.getAttribute('onclick')||'').includes("'"+name+"'"));
+  showTab(name,desktopButton||button);
+  document.querySelectorAll('.mobilePosBar button').forEach(b=>b.classList.toggle('active',b.dataset.mobileTab===name));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(name==='sales') setTimeout(()=>document.getElementById('quickSaleInput')?.focus({preventScroll:true}),180);
+}
+function syncMobileNav(name){
+  document.querySelectorAll('.mobilePosBar button').forEach(b=>b.classList.toggle('active',b.dataset.mobileTab===name));
+}
+
+const DEMO_EMAIL="streetfurr@exotics.com", DEMO_PASSWORD="cannabis1!";
+const productsDefault=[
+{name:"Versace",category:"Flower",cost:1400,inventory:0,startingInventory:0,notes:""},
+{name:"BX2",category:"Flower",cost:1400,inventory:0,startingInventory:0,notes:""},
+{name:"Lip Smacker",category:"Flower",cost:1000,inventory:0,startingInventory:0,notes:""},
+{name:"Double Runtz",category:"Flower",cost:1000,inventory:0,startingInventory:0,notes:""},
+{name:"Super Boof",category:"Flower",cost:650,inventory:0,startingInventory:0,notes:""},
+{name:"Low",category:"Flower",cost:375,inventory:0,startingInventory:0,notes:""},
+{name:"Whole Melts",category:"Wax",cost:60,inventory:5,startingInventory:5,notes:"5 ounces left"},
+{name:"Mike Tyson Cart",category:"Cart",cost:10,inventory:0,startingInventory:0,notes:""},
+{name:"StreetFurr Shirt",category:"Merchandise",cost:0,inventory:0,startingInventory:0,notes:""},
+{name:"StreetFurr Hoodie",category:"Merchandise",cost:0,inventory:0,startingInventory:0,notes:""},
+{name:"StreetFurr Hat",category:"Merchandise",cost:0,inventory:0,startingInventory:0,notes:""},
+{name:"StreetFurr Backpack",category:"Merchandise",cost:0,inventory:0,startingInventory:0,notes:""}
+];
+const unitMult={"Unit":1,"HP":.5,"QP":.25,"Ounce":1/16,"Half Ounce":1/32,"Quarter":1/64,"Eighth":1/128,"Jar":1,"Cart":1,"Shirt":1,"Hoodie":1,"Hat":1,"Backpack":1,"Custom":1};
+const FLOWER_OZ_PER_UNIT=16;
+function inventoryDeduction(p,unit,qty){return p&&p.category==="Flower"?(unitMult[unit]||0)*Number(qty||0):Number(qty||0)}
+function soldBaseUnitsForProduct(name){return sales.filter(s=>s.product===name).reduce((a,s)=>{let p=products.find(x=>x.name===name);return a+inventoryDeduction(p,s.unit,s.qty)},0)}
+function cleanNumber(n,d=4){let v=Math.max(0,Number(n||0));return Number(v.toFixed(d))}
+function flowerBreakdown(units){let oz=cleanNumber(units*16,4);return {units:cleanNumber(units,4),ounces:cleanNumber(oz,3),halves:cleanNumber(oz*2,2),quarters:cleanNumber(oz*4,2),eighths:cleanNumber(oz*8,2)}}
+function inventoryAvailable(p,unit,qty){return Number(p.inventory||0)+1e-9>=inventoryDeduction(p,unit,qty)}
+function changeInventoryForSale(p,unit,qty,direction=-1){if(!p)return;p.inventory=cleanNumber(Number(p.inventory||0)+(direction*inventoryDeduction(p,unit,qty)),6)}
+const payments=["Cash","Cash App","Chime","PayPal","Card","Other"];
+const lastNight=[
+["Double Runtz","Flower","Ounce",1,"Cash",70,60],["Versace","Flower","Half Ounce",1,"Cash",75,45],["Double Runtz","Flower","HP",1,"Cash",400,400],["Mike Tyson Cart","Cart","Cart",1,"Cash",20,10],["BX2","Flower","Eighth",1,"Cash",20,10],["Super Boof","Flower","Half Ounce",1,"Cash App",30,20],["Versace","Flower","Half Ounce",1,"Cash App",75,45],["Versace","Flower","Ounce",1,"Cash",80,80],["Whole Melts","Wax","Ounce",1,"Cash",100,60],["Super Boof","Flower","Ounce",1,"Cash",70,40],["Mike Tyson Cart","Cart","Cart",1,"Cash",20,10],["Lip Smacker","Flower","QP",1,"Cash",250,250],["Super Boof","Flower","Half Ounce",1,"Cash",35,20],["Versace","Flower","Half Ounce",1,"Cash",60,45],["Versace","Flower","Half Ounce",1,"Cash App",70,40],["Mike Tyson Cart","Cart","Cart",2,"Cash App",30,20],["Double Runtz","Flower","Ounce",1,"Cash App",70,40],["Whole Melts","Wax","Ounce",1,"Cash",90,60],["Super Boof","Flower","Ounce",1,"Cash",70,40],["Double Runtz","Flower","Ounce",1,"Cash",70,40],["Mike Tyson Cart","Cart","Cart",2,"Cash",30,20],["Lip Smacker","Flower","Ounce",1,"Cash",80,60],["Low","Flower","Half Ounce",1,"Chime",20,10],["Mike Tyson Cart","Cart","Cart",1,"Cash",20,10],["Whole Melts","Wax","Ounce",1,"Cash",80,50],["Super Boof","Flower","Ounce",3,"Cash",150,120],["Low","Flower","QP",1,"Cash",150,80],["Mike Tyson Cart","Cart","Cart",1,"Cash",20,10],["Whole Melts","Wax","Ounce",1,"Cash",90,60],["Versace","Flower","Ounce",1,"Cash",150,90],["BX2","Flower","Ounce",1,"Cash",125,90],["Mike Tyson Cart","Cart","Cart",2,"Cash",30,20],["Versace","Flower","Eighth",1,"Cash",20,15],["BX2","Flower","Eighth",1,"Cash",25,15],["Double Runtz","Flower","Eighth",1,"Cash",20,6],["Mike Tyson Cart","Cart","Cart",1,"Cash",15,10]
+].map((r,i)=>({product:r[0],category:r[1],unit:r[2],qty:r[3],payment:r[4],amount:r[5],cost:r[6],profit:r[5]-r[6],time:"Last Night"}));
+let products=JSON.parse(localStorage.getItem("sfx_ceo_products_v2_loaded")||"null")||productsDefault;
+products=products.map(p=>({...p,startingInventory:Number(p.startingInventory ?? p.inventory ?? 0),inventory:Number(p.inventory||0)}));
+let sales=JSON.parse(localStorage.getItem("sfx_ceo_sales_v2_loaded")||"null")||lastNight;
+let tasks=JSON.parse(localStorage.getItem("sfx_ceo_tasks_v2_loaded")||"[]");
+let events=JSON.parse(localStorage.getItem("sfx_ceo_events_v1")||"[]");
+let calendarDate=new Date();
+function login(){if(loginEmail.value===DEMO_EMAIL&&loginPass.value===DEMO_PASSWORD){sessionStorage.setItem("sfx_login","1");openApp()}else alert("Wrong login")}
+function logout(){sessionStorage.removeItem("sfx_login");location.reload()}
+function openApp(){loginPage.classList.add("hidden");app.classList.remove("hidden");userPill.textContent=DEMO_EMAIL;renderAll()}
+if(sessionStorage.getItem("sfx_login")==="1") openApp();
+function money(n){return "$"+(Number(n)||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
+function save(){localStorage.setItem("sfx_ceo_products_v2_loaded",JSON.stringify(products));localStorage.setItem("sfx_ceo_sales_v2_loaded",JSON.stringify(sales));localStorage.setItem("sfx_ceo_tasks_v2_loaded",JSON.stringify(tasks));localStorage.setItem("sfx_ceo_events_v1",JSON.stringify(events))}
+function showTab(id,btn){document.querySelectorAll(".tabPage").forEach(x=>x.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");renderAll()}
+function calcCost(p,unit,qty){return p.category==="Flower"?p.cost*(unitMult[unit]||1)*qty:p.cost*qty}
+function renderAll(){renderProducts();renderSales();renderTasks();renderPrompts();renderChecks();renderMetrics();renderEvents();renderCalendar();renderChatWelcome()}
+function renderProducts(){
+  saleProduct.innerHTML=products.map((p,i)=>`<option value="${i}">${p.name} — ${p.category} — cost ${money(p.cost)}</option>`).join("");
+  productList.innerHTML=products.map((p,i)=>{
+    const isFlower=p.category==="Flower", start=Number(p.startingInventory||0), current=Number(p.inventory||0);
+    const currentLabel=isFlower?`${cleanNumber(current)} units / ${cleanNumber(current*16,3)} oz`:`${cleanNumber(current)} items`;
+    return `<div class="form6" style="margin-bottom:8px"><input value="${p.name}" data-i="${i}" data-f="name"><select data-i="${i}" data-f="category"><option ${p.category==="Flower"?"selected":""}>Flower</option><option ${p.category==="Wax"?"selected":""}>Wax</option><option ${p.category==="Cart"?"selected":""}>Cart</option><option ${p.category==="Merchandise"?"selected":""}>Merchandise</option><option ${p.category==="Other"?"selected":""}>Other</option></select><input type="number" step="0.01" value="${p.cost}" data-i="${i}" data-f="cost" title="Full 16 oz unit cost for flower"><input type="number" step="0.0078125" value="${start}" data-i="${i}" data-f="startingInventory" title="Starting full units for flower"><input value="${p.notes||""}" data-i="${i}" data-f="notes"><button class="danger" onclick="deleteProduct(${i})">X</button></div><div class="small" style="margin:-4px 0 12px 4px"><b>${p.name}:</b> current inventory ${currentLabel}. Changing starting inventory recalculates current inventory from recorded sales.</div>`
+  }).join("")
+}
+function saveProducts(){
+  const oldStarts=products.map(p=>Number(p.startingInventory||0));
+  document.querySelectorAll("#productList input,#productList select").forEach(el=>{let i=+el.dataset.i,f=el.dataset.f;products[i][f]=(f==="cost"||f==="startingInventory")?Number(el.value||0):el.value});
+  products.forEach((p,i)=>{
+    if(Number(p.startingInventory||0)!==oldStarts[i]){
+      const sold=soldBaseUnitsForProduct(p.name);p.inventory=cleanNumber(Number(p.startingInventory||0)-sold,6);
+    }
+  });
+  save();renderAll()
+}
+function addProduct(){if(!newName.value.trim())return alert("Add product name");let inv=Number(newInv.value||0);products.push({name:newName.value.trim(),category:newCat.value,cost:Number(newCost.value||0),inventory:inv,startingInventory:inv,notes:newNotes.value||""});newName.value="";newCost.value="";newInv.value="";newNotes.value="";save();renderAll()}
+function deleteProduct(i){if(confirm("Remove product?")){products.splice(i,1);save();renderAll()}}
+
+let pendingQuickSale=null;
+const quickUnitPatterns=[
+  {unit:"HP",re:/\b(?:hp|half\s*pound)\b/i},
+  {unit:"QP",re:/\b(?:qp|quarter\s*pound)\b/i},
+  {unit:"Half Ounce",re:/\b(?:14\s*g(?:rams?)?|half\s*(?:ounce|oz)|1\/2\s*(?:ounce|oz))\b/i},
+  {unit:"Quarter",re:/\b(?:7\s*g(?:rams?)?|quarter|1\/4\s*(?:ounce|oz))\b/i},
+  {unit:"Eighth",re:/\b(?:3\.5\s*g?(?:rams?)?|eighth|1\/8\s*(?:ounce|oz))\b/i},
+  {unit:"Ounce",re:/\b(?:28\s*g(?:rams?)?|ounce|oz)\b/i},
+  {unit:"Cart",re:/\b(?:cart|carts|cartridge|cartridges)\b/i},
+  {unit:"Jar",re:/\b(?:jar|jars)\b/i},
+  {unit:"Shirt",re:/\b(?:shirt|shirts|tee|tees)\b/i},
+  {unit:"Hoodie",re:/\b(?:hoodie|hoodies)\b/i},
+  {unit:"Hat",re:/\b(?:hat|hats|cap|caps)\b/i},
+  {unit:"Backpack",re:/\b(?:backpack|backpacks|bag|bags)\b/i},
+  {unit:"Unit",re:/\b(?:unit|pound|lb)\b/i}
+];
+function normalizeQuickText(v){return String(v||"").toLowerCase().replace(/[$,]/g,"").replace(/[–—-]/g," ").replace(/\s+/g," ").trim()}
+function productScore(text,name){
+  let a=normalizeQuickText(text),b=normalizeQuickText(name);
+  if(a.includes(b))return 100+b.length;
+  let aliases={"mike tyson cart":["mike tyson","tyson cart","tyson carts","mike cart"],"double runtz":["double runts","d runtz","d runts"],"whole melts":["whole melt","wholemelts"],"lip smacker":["lipsmacker","lip smack"],"super boof":["superboof"],"streetfurr shirt":["streetfurr tee","shirt","tee"],"streetfurr hoodie":["hoodie"],"streetfurr hat":["hat","cap"],"streetfurr backpack":["backpack","bag"]};
+  let list=aliases[b]||[];for(let x of list)if(a.includes(x))return 90+x.length;
+  let words=b.split(" "),hits=words.filter(w=>w.length>2&&a.includes(w)).length;return hits?hits*20:0;
+}
+function parseQuickSale(){
+  saveProducts();
+  const raw=quickSaleInput.value.trim();if(!raw){quickStatus.textContent="Type a sale first.";quickPreview.classList.add("hidden");return}
+  const text=normalizeQuickText(raw);
+  let ranked=products.map((p,i)=>({p,i,score:productScore(text,p.name)})).sort((a,b)=>b.score-a.score);
+  let best=ranked[0];if(!best||best.score<20){quickStatus.textContent="I could not match the product. Use the manual form or type more of the product name.";quickPreview.classList.add("hidden");return}
+  let explicitOz=text.match(/\b(\d+(?:\.\d+)?)\s*(?:oz|ounces?)\b/i);
+  let unitMatch=quickUnitPatterns.find(x=>x.re.test(text));
+  let unit=explicitOz?"Ounce":(unitMatch?unitMatch.unit:(best.p.category==="Cart"?"Cart":best.p.category==="Merchandise"?(best.p.name.includes("Hoodie")?"Hoodie":best.p.name.includes("Hat")?"Hat":best.p.name.includes("Backpack")?"Backpack":"Shirt"):"Custom"));
+  let pay="Cash";
+  if(/cash\s*app|cashapp/i.test(text))pay="Cash App";else if(/\bchime\b/i.test(text))pay="Chime";else if(/\bpaypal\b|pay\s*pal/i.test(text))pay="PayPal";else if(/\bcard\b|credit|debit/i.test(text))pay="Card";else if(/\bother\b/i.test(text))pay="Other";
+  let amountMatch=text.match(/(?:for|total|=)\s*(\d+(?:\.\d{1,2})?)\b/i) || text.match(/\b(\d+(?:\.\d{1,2})?)\s*(?:dollars?|bucks?)\b/i);
+  if(!amountMatch){quickStatus.textContent="I found the product but not the sale amount. Try: “Double Runtz 3.5 for 50”.";quickPreview.classList.add("hidden");return}
+  let amount=Number(amountMatch[1]);
+  let qty=explicitOz?Number(explicitOz[1]):1;
+  let qtyMatch=text.match(/^\s*(\d+(?:\.\d+)?)\s+(?=[a-z])/i);
+  if(!explicitOz && qtyMatch && !/^3\.5\b/.test(text) && !/^7\b/.test(text) && !/^14\b/.test(text) && !/^28\b/.test(text))qty=Number(qtyMatch[1]);
+  if(unit==="Cart"||["Jar","Shirt","Hoodie","Hat","Backpack"].includes(unit)){
+    let before=text.slice(0,unitMatch?text.search(unitMatch.re):text.length);let m=before.match(/(?:^|\s)(\d+)\s*$/);if(m)qty=Number(m[1]);
+  }
+  let cost=calcCost(best.p,unit,qty),profit=amount-cost;
+  pendingQuickSale={productIndex:best.i,product:best.p.name,category:best.p.category,unit,qty,payment:pay,amount,cost,profit,raw};
+  qpProduct.textContent=best.p.name;qpUnit.textContent=unit;qpQty.textContent=qty;qpPayment.textContent=pay;qpAmount.textContent=money(amount);qpRon.textContent=money(cost);qpProfit.textContent=money(profit);qpDrew.textContent=money(profit/2);qpZack.textContent=money(profit/2);qpBreakEven.textContent=money(cost);
+  const profitEls=[qpProfit,qpDrew,qpZack];profitEls.forEach(el=>{el.classList.remove("green","red");el.classList.add(profit>=0?"green":"red")});
+  qpAmount.classList.remove("green","red");qpAmount.classList.add(profit>=0?"green":"red");
+  quickPreview.classList.remove("hidden");quickStatus.innerHTML=profit>=0?`<span class="green"><b>PROFITABLE:</b> Pay Ron ${money(cost)}, then Drew and Zack receive ${money(profit/2)} each.</span>`:`<span class="red"><b>BELOW COST:</b> This sale loses ${money(Math.abs(profit))}. Ron is still owed ${money(cost)}.</span>`;
+}
+function confirmQuickSale(){
+  if(!pendingQuickSale)return;
+  let q=pendingQuickSale,p=products[q.productIndex];
+  if(!inventoryAvailable(p,q.unit,q.qty)){quickStatus.textContent=`Not enough ${q.product} inventory. Current remaining: ${p.category==="Flower"?cleanNumber(p.inventory*16,3)+" oz":cleanNumber(p.inventory)+" items"}.`;return}
+  sales.push({product:q.product,category:q.category,unit:q.unit,qty:q.qty,payment:q.payment,amount:q.amount,cost:q.cost,profit:q.profit,time:new Date().toLocaleString(),note:q.raw,source:"Easy POS"});
+  changeInventoryForSale(p,q.unit,q.qty,-1);
+  save();renderAll();quickSaleInput.value="";quickPreview.classList.add("hidden");quickStatus.textContent=`Sale added: ${q.product} — ${money(q.amount)} ${q.payment}. Ready for the next sale.`;pendingQuickSale=null;quickSaleInput.focus();
+}
+function editQuickSale(){
+  if(!pendingQuickSale)return;let q=pendingQuickSale;
+  saleProduct.value=String(q.productIndex);saleUnit.value=q.unit;saleQty.value=q.qty;saleAmount.value=q.amount;payment.value=q.payment;
+  quickPreview.classList.add("hidden");quickStatus.textContent="The sale was moved into the manual form below. Make changes, then press Add Sale.";pendingQuickSale=null;saleAmount.focus();
+}
+function cancelQuickSale(){pendingQuickSale=null;quickPreview.classList.add("hidden");quickStatus.textContent="Sale canceled. Nothing was saved.";quickSaleInput.focus()}
+function useQuickExample(v){quickSaleInput.value=v;parseQuickSale()}
+let quickParseTimer=null;quickSaleInput.addEventListener("input",()=>{clearTimeout(quickParseTimer);quickParseTimer=setTimeout(()=>{if(quickSaleInput.value.trim())parseQuickSale()},350)});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&document.activeElement&&document.activeElement.id==="quickSaleInput"){e.preventDefault();parseQuickSale()}});
+
+function addSale(){saveProducts();let p=products[+saleProduct.value],qty=Number(saleQty.value||0),amount=Number(saleAmount.value||0);if(!qty||!amount)return alert("Enter qty and sale amount");if(!inventoryAvailable(p,saleUnit.value,qty))return alert(`Not enough inventory. ${p.name} has ${p.category==="Flower"?cleanNumber(p.inventory*16,3)+" ounces":cleanNumber(p.inventory)+" items"} remaining.`);let cost=calcCost(p,saleUnit.value,qty);sales.push({product:p.name,category:p.category,unit:saleUnit.value,qty,payment:payment.value,amount,cost,profit:amount-cost,time:new Date().toLocaleString()});changeInventoryForSale(p,saleUnit.value,qty,-1);saleAmount.value="";save();renderAll()}
+function undoLast(){let s=sales.pop();if(s){let p=products.find(x=>x.name===s.product);changeInventoryForSale(p,s.unit,s.qty,1)}save();renderAll()}
+function clearSales(){if(confirm("Clear all sales?")){sales=[];save();renderAll()}}
+function loadLastNight(){sales=JSON.parse(JSON.stringify(lastNight));save();renderAll();alert("Loaded last night's 36 sales.")}
+function delSale(i){let s=sales[i];if(!s)return;if(!confirm("Delete this sale and return its weight to inventory?"))return;let p=products.find(x=>x.name===s.product);changeInventoryForSale(p,s.unit,s.qty,1);sales.splice(i,1);save();renderAll()}
+function renderSales(){salesBody.innerHTML=sales.map((s,i)=>`<tr><td>${i+1}</td><td>${s.product}<div class="small">${s.time}</div></td><td>${s.category}</td><td>${s.unit}</td><td>${s.qty}</td><td>${s.payment}</td><td>${money(s.amount)}</td><td>${money(s.cost)}</td><td class="${s.profit>=0?'green':'red'}">${money(s.profit)}</td><td>${money(s.profit/2)}</td><td><button class="danger" onclick="delSale(${i})">X</button></td></tr>`).join("")}
+function renderInventoryWeights(){
+  if(!window.inventoryWeightBody)return;
+  inventoryWeightBody.innerHTML=products.filter(p=>p.category==="Flower").map(p=>{
+    const st=flowerBreakdown(p.startingInventory), rem=flowerBreakdown(p.inventory), sold=cleanNumber(st.ounces-rem.ounces,3), ok=Number(p.inventory||0)>=-1e-9;
+    return `<tr><td>${p.name}</td><td>${st.units} units / ${st.ounces} oz</td><td>${sold} oz</td><td>${rem.units}</td><td>${rem.ounces}</td><td>${rem.halves}</td><td>${rem.quarters}</td><td>${rem.eighths}</td><td class="${ok?'green':'red'}">${ok?'Balanced':'Over-sold'}</td></tr>`
+  }).join("")||'<tr><td colspan="9">No flower products.</td></tr>'
+}
+function renderMetrics(){let total=sales.reduce((a,s)=>a+s.amount,0),cost=sales.reduce((a,s)=>a+s.cost,0),profit=total-cost,h=Number(hoursWorked.value||0);totalSales.textContent=money(total);totalCost.textContent=money(cost);totalProfit.textContent=money(profit);drewShare.textContent=money(profit/2);zackShare.textContent=money(profit/2);txCount.textContent=sales.length;avgSale.textContent=money(sales.length?total/sales.length:0);profitHour.textContent=money(h?profit/h:0);let by={};sales.forEach(s=>by[s.product]=(by[s.product]||0)+s.amount);bestProduct.textContent=Object.keys(by).sort((a,b)=>by[b]-by[a])[0]||"N/A";let pt={};payments.forEach(p=>pt[p]=0);sales.forEach(s=>pt[s.payment]=(pt[s.payment]||0)+s.amount);paymentGrid.innerHTML=payments.map(p=>`<div class="mini"><span class="small">${p}</span><b>${money(pt[p])}</b></div>`).join("");inventoryCost.textContent=money(products.reduce((a,p)=>a+(Number(p.cost||0)*Number(p.inventory||0)),0));inventoryQty.textContent=`${cleanNumber(products.filter(p=>p.category==="Flower").reduce((a,p)=>a+Number(p.inventory||0)*16,0),3)} oz`;lowStock.textContent=products.filter(p=>p.category==="Flower"?Number(p.inventory||0)*16<=4:Number(p.inventory||0)<=2).length;renderInventoryWeights()}
+function exportCSV(){let rows=[["Product","Category","Unit","Qty","Payment","Sale","Cost","Profit","Time"]];sales.forEach(s=>rows.push([s.product,s.category,s.unit,s.qty,s.payment,s.amount,s.cost,s.profit,s.time]));let csv=rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="streetfurr_sales.csv";a.click()}
+function closeout(){let total=sales.reduce((a,s)=>a+s.amount,0),cost=sales.reduce((a,s)=>a+s.cost,0),profit=total-cost;closeoutBox.textContent=`${eventName.value} CLOSEOUT\n\nTotal Sales: ${money(total)}\nCost/Ron Payout: ${money(cost)}\nProfit: ${money(profit)}\nDrew: ${money(profit/2)}\nZack: ${money(profit/2)}\nTransactions: ${sales.length}\nCash Drawer: ${money(sales.filter(s=>s.payment==="Cash").reduce((a,s)=>a+s.amount,0))}`;showTab("events",document.querySelectorAll(".tab")[3])}
+function saveEvent(){
+  if(!eventName.value.trim()||!eventDate.value){alert("Add event name and date.");return}
+  events.push({name:eventName.value.trim(),date:eventDate.value,location:eventLocation.value||"",notes:eventNotes.value||""});
+  eventName.value="";eventLocation.value="";eventNotes.value="";
+  save();renderEvents();renderCalendar();alert("Event saved to calendar.");
+}
+function deleteEvent(i){events.splice(i,1);save();renderEvents();renderCalendar()}
+function renderEvents(){if(typeof eventList==="undefined")return;eventList.innerHTML=events.sort((a,b)=>a.date.localeCompare(b.date)).map((e,i)=>`<div class="mini" style="margin-bottom:8px"><b>${e.name}</b><div class="small">${e.date} ${e.location?"/ "+e.location:""}</div><div class="small">${e.notes||""}</div><button class="danger" style="margin-top:8px" onclick="deleteEvent(${i})">Remove</button></div>`).join("")||'<div class="small">No events saved yet.</div>'}
+function moveMonth(n){calendarDate.setMonth(calendarDate.getMonth()+n);renderCalendar()}
+function renderCalendar(){
+  if(typeof calendarGrid==="undefined")return;
+  const y=calendarDate.getFullYear(),m=calendarDate.getMonth();
+  const first=new Date(y,m,1),last=new Date(y,m+1,0);
+  calendarTitle.textContent=first.toLocaleString(undefined,{month:"long",year:"numeric"});
+  let htmlCal=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<div class="small" style="text-align:center;font-weight:900">${d}</div>`).join("");
+  for(let i=0;i<first.getDay();i++)htmlCal+=`<div></div>`;
+  for(let d=1;d<=last.getDate();d++){
+    let ds=`${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    let chips=events.filter(e=>e.date===ds).map(e=>`<div class="eventChip">${e.name}</div>`).join("");
+    htmlCal+=`<div class="day"><b>${d}</b>${chips}</div>`;
+  }
+  calendarGrid.innerHTML=htmlCal;
+}
+function addTask(){if(!taskName.value.trim())return;tasks.push({name:taskName.value,owner:taskOwner.value||"Unassigned",done:false});taskName.value="";taskOwner.value="";save();renderTasks()}
+function toggleTask(i){tasks[i].done=!tasks[i].done;save();renderTasks()}
+function renderTasks(){taskList.innerHTML=tasks.map((t,i)=>`<div class="check"><input type="checkbox" ${t.done?"checked":""} onchange="toggleTask(${i})"><div>${t.name}</div><div class="small">${t.owner}</div><button class="danger" onclick="tasks.splice(${i},1);save();renderTasks()">X</button></div>`).join("")}
+function copyText(id){navigator.clipboard.writeText(document.getElementById(id).innerText);alert("Copied prompt")}
+function renderPrompts(){let prompts=[
+["Daily CEO Operator","Act as my event CEO. Review my sales, payments, inventory, tasks, and closeout. Tell me the top 5 actions that will increase revenue today, what risks to fix, and what to delegate."],
+["Inventory Forecast","Using my remaining inventory, cost basis, and average sale price, calculate best-case revenue, conservative revenue, profit, low-stock risks, and what to push hardest today."],
+["Vendor Sales Script","Create a short vendor booth sales script that explains the product menu, merch, payment options, and urgency without sounding pushy."],
+["Fact Check Auditor","Audit this sales report for missing transactions, wrong costs, payment mismatches, inventory errors, and anything that does not reconcile."]
+];promptVault.innerHTML=prompts.map((p,i)=>`<div class="prompt"><button class="copy" onclick="copyText('p${i}')">Copy</button><b>${p[0]}</b><div id="p${i}">${p[1]}</div></div>`).join("")}
+function renderChecks(){let checks=["Cash counted matches Cash total","Cash App, Chime, PayPal, Card totals verified","Ron payout equals product cost total","Drew/Zack split equals profit divided by two","Inventory remaining matches physical count","At-cost sales marked correctly","Closeout report exported","Top product and low-stock items reviewed"];checkList.innerHTML=checks.map((c,i)=>`<div class="check"><input type="checkbox"><div>${c}</div><div class="small">Control ${i+1}</div><span></span></div>`).join("")}
+
+function renderChatWelcome(){
+  if(typeof chatBox==="undefined"||chatBox.dataset.ready)return;
+  chatBox.dataset.ready="1";
+  botSay("Agent online. Ask me what to do, or use quick actions: Make Today Plan, Audit Sales, Create Tasks.");
+}
+function botSay(text){if(typeof chatBox==="undefined")return;chatBox.innerHTML+=`<div class="msg botMsg">${text}</div>`;chatBox.scrollTop=chatBox.scrollHeight}
+function userSay(text){chatBox.innerHTML+=`<div class="msg userMsg">${text}</div>`;chatBox.scrollTop=chatBox.scrollHeight}
+function askAgent(){
+  let q=agentInput.value.trim(); if(!q)return;
+  userSay(q); agentInput.value="";
+  let lower=q.toLowerCase();
+  if(lower.includes("task")) agentDo("tasks");
+  else if(lower.includes("audit")||lower.includes("check")) agentDo("audit");
+  else if(lower.includes("closeout")) {closeout(); botSay("Closeout report generated in the Events section.");}
+  else if(lower.includes("load")&&lower.includes("night")) {loadLastNight(); botSay("Loaded yesterday's sales.");}
+  else agentDo("plan");
+}
+function agentDo(type){
+  let total=sales.reduce((a,s)=>a+s.amount,0),cost=sales.reduce((a,s)=>a+s.cost,0),profit=total-cost;
+  let cash=sales.filter(s=>s.payment==="Cash").reduce((a,s)=>a+s.amount,0);
+  let low=products.filter(p=>Number(p.inventory||0)<=2).map(p=>p.name).join(", ")||"none";
+  if(type==="plan"){
+    botSay(`<b>Today's CEO plan:</b><br>1. Count inventory as soon as Ron arrives.<br>2. Push high-margin items first.<br>3. Watch low-stock products: ${low}.<br>4. Reconcile cash drawer against ${money(cash)} cash sales.<br>5. Current profit tracked: ${money(profit)}.`);
+  }
+  if(type==="audit"){
+    botSay(`<b>Audit result:</b><br>Total sales: ${money(total)}.<br>Cost basis/Ron payout: ${money(cost)}.<br>Profit: ${money(profit)}.<br>Drew/Zack split: ${money(profit/2)} each.<br>Next control: verify payment apps and physical cash match the payment breakdown.`);
+  }
+  if(type==="tasks"){
+    let newTasks=["Count starting inventory with Ron","Verify cash drawer starting amount","Post event promo/story","Check payment apps match dashboard","Run closeout report before leaving"];
+    newTasks.forEach(t=>tasks.push({name:t,owner:"Drew / Zack",done:false}));
+    save();renderTasks();botSay("I added the operating tasks to the Task Command Center.");
+  }
+}
+
+</script>
+</body>
+</html>
